@@ -19,6 +19,10 @@ namespace Infrastructure.Persistence.Configurations
                .IsRequired()
                .HasDefaultValue(AccountRules.DefaultReputation);
 
+            builder
+                .Property(account => account.Role)
+                .IsRequired()
+                .HasConversion<string>();
         }
     }
 }

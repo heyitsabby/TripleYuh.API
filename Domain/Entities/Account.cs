@@ -13,7 +13,7 @@ namespace Domain.Entities
 
         public string Username { get; set; } = string.Empty;
 
-        public string? Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public string PasswordHash { get; set; } = string.Empty;
 
@@ -23,7 +23,7 @@ namespace Domain.Entities
 
         public Role Role { get; set; }
 
-        public string VerificationToken { get; set; } = string.Empty;
+        public string? VerificationToken { get; set; }
 
         public DateTime? Verified { get; set; }
         

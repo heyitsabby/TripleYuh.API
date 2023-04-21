@@ -18,9 +18,9 @@
 
         public string RevokedByIp { get; set; } = string.Empty;
 
-        public string ReplacedByToken { get; set; } = string.Empty;
+        public string? ReplacedByToken { get; set; }
 
-        public string ReasonRevoked { get; set; } = string.Empty;
+        public string? ReasonRevoked { get; set; }
 
         public bool IsExpired => DateTime.UtcNow >= Expires;
 
