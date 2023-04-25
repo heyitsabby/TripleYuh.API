@@ -55,7 +55,8 @@ namespace Infrastructure.Filters
             var details = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "An error occurred while processing your request."
+                Title = "An error occurred while processing your request.",
+                Detail = context.Exception.Message
             };
 
             context.Result = new ObjectResult(details)

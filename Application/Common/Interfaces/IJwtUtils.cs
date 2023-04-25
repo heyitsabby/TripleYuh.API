@@ -6,8 +6,8 @@ namespace Application.Common.Interfaces
     {
         public string GenerateJwtToken(Account account);
 
-        public int? ValidateJwtToken(string token);
+        public int? ValidateJwtToken(string? token);
         
-        public RefreshToken GenerateRefreshToken(string ipAddress);
+        public RefreshToken GenerateRefreshToken(string? ipAddress);
     }
 }

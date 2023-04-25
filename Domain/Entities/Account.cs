@@ -29,7 +29,7 @@ namespace Domain.Entities
         
         public bool IsVerified => Verified.HasValue || PasswordReset.HasValue;
 
-        public string ResetToken { get; set; } = string.Empty;
+        public string? ResetToken { get; set; }
         
         public DateTime? ResetTokenExpires { get; set; }
         

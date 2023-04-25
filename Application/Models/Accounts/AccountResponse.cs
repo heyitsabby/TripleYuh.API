@@ -13,5 +13,7 @@
         public DateTime? Updated { get; set; }
         
         public bool IsVerified { get; set; }
+
+        public int Reputation { get; set; }
     }
 }

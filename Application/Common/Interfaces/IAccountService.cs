@@ -4,30 +4,30 @@ namespace Application.Common.Interfaces
 {
     public interface IAccountService
     {
-        AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress);
+        Task<AuthenticateResponse> AuthenticateAsync(string email, string password, string? ipAddress);
 
-        AuthenticateResponse RefreshToken(string token, string ipAddress);
+        Task<AuthenticateResponse> RefreshTokenAsync(string? token, string? ipAddress);
         
-        void RevokeToken(string token, string ipAddress);
+        Task RevokeTokenAsync(string? token, string? ipAddress);
         
-        void Register(RegisterRequest model, string origin);
+        Task RegisterAsync(string username, string email, string password, bool acceptTerms, string origin);
         
-        void VerifyEmail(string token);
+        Task VerifyEmailAsync(string token);
         
-        void ForgotPassword(ForgotPasswordRequest model, string origin);
+        Task ForgotPasswordAsync(string email, string origin);
         
-        void ValidateResetToken(ValidateResetTokenRequest model);
+        Task ValidateResetTokenAsync(ValidateResetTokenRequest model);
         
-        void ResetPassword(ResetPasswordRequest model);
+        Task ResetPasswordAsync(string token, string password);
         
         IEnumerable<AccountResponse> GetAll();
         
-        AccountResponse GetById(int id);
+        Task<AccountResponse> GetByUsernameAsync(string username);
         
-        AccountResponse Create(CreateRequest model);
+        Task<AccountResponse> CreateAsync(CreateRequest model);
         
-        AccountResponse Update(int id, UpdateRequest model);
+        Task<AccountResponse> UpdateAsync(string username, string? password, string? role, string? email, string? origin);
         
-        void Delete(int id);
+        Task DeleteAsync(string username);
     }
 }

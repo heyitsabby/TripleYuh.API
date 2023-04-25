@@ -2,25 +2,22 @@
 using Application.Helpers;
 using Domain.Entities;
 using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Authorization
 {
     public class JwtUtils : IJwtUtils
     {
         private readonly DataContext context;
-        private readonly AppSettings appsettings;
+        private readonly IOptions<AppSettings> appsettings;
 
-        public JwtUtils(DataContext context, AppSettings appsettings)
+        public JwtUtils(DataContext context, IOptions<AppSettings> appsettings)
         {
             this.context = context;
             this.appsettings = appsettings;
@@ -31,7 +28,7 @@ namespace Infrastructure.Authorization
             // generate token that is valid for 15 minutes
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(appsettings.Secret);
+            var key = Encoding.ASCII.GetBytes(appsettings.Value.Secret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -45,7 +42,7 @@ namespace Infrastructure.Authorization
             return tokenHandler.WriteToken(token);
         }
 
-        public RefreshToken GenerateRefreshToken(string ipAddress)
+        public RefreshToken GenerateRefreshToken(string? ipAddress)
         {
             var refreshToken = new RefreshToken
             {
@@ -67,13 +64,13 @@ namespace Infrastructure.Authorization
             return refreshToken;
         }
 
-        public int? ValidateJwtToken(string token)
+        public int? ValidateJwtToken(string? token)
         {
             if (token == null) { return null; }
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(appsettings.Secret);
+            var key = Encoding.ASCII.GetBytes(appsettings.Value.Secret);
 
             try
             {

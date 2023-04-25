@@ -7,6 +7,13 @@ namespace Infrastructure.Persistence
     {
         public DbSet<Account> Accounts { get; set; } = null!;
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+
+        public DataContext()
+        {
+            
+        }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             
