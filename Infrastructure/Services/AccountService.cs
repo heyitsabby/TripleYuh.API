@@ -118,7 +118,7 @@ namespace Infrastructure.Services
             sendPasswordResetEmail(account, origin);
         }
 
-        public IEnumerable<AccountResponse> GetAll()
+        public async Task<IEnumerable<AccountResponse>> GetAllAsync()
         {
             var accounts = context.Accounts;
 

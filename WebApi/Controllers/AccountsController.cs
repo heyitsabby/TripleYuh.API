@@ -8,6 +8,7 @@ using Application.Features.Accounts.Commands.RevokeTokenCommand;
 using Application.Features.Accounts.Commands.UpdateCommand;
 using Application.Features.Accounts.Commands.ValidateResetTokenCommand;
 using Application.Features.Accounts.Commands.VerifyEmailCommand;
+using Application.Features.Accounts.Queries.GetAllQuery;
 using Application.Features.Accounts.Queries.GetByUsernameQuery;
 using Application.Models.Accounts;
 using Domain.Entities;
@@ -159,7 +160,14 @@ namespace WebApi.Controllers
             return Ok(new { message = "Reset token is valid." });
         }
 
-        []
+        [Authorize(Role.Admin)]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync(GetAllQuery query)
+        {
+            var accounts = await Mediator.Send(query);
+
+            return Ok(accounts);
+        }
 
         // Helpers
 

@@ -20,7 +20,7 @@ namespace Application.Common.Interfaces
         
         Task ResetPasswordAsync(string token, string password);
         
-        IEnumerable<AccountResponse> GetAll();
+        Task<IEnumerable<AccountResponse>> GetAllAsync();
         
         Task<AccountResponse> GetByUsernameAsync(string username);
         
