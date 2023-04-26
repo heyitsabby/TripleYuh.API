@@ -306,9 +306,9 @@ namespace Infrastructure.Services
             return mapper.Map<AccountResponse>(account);
         }
 
-        public async Task ValidateResetTokenAsync(ValidateResetTokenRequest model)
+        public async Task ValidateResetTokenAsync(string? token)
         {
-            await getAccountByResetTokenAsync(model.Token);
+            await getAccountByResetTokenAsync(token);
         }
 
         public async Task VerifyEmailAsync(string token)

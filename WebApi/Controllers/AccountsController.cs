@@ -6,6 +6,7 @@ using Application.Features.Accounts.Commands.RegisterCommand;
 using Application.Features.Accounts.Commands.ResetPasswordCommand;
 using Application.Features.Accounts.Commands.RevokeTokenCommand;
 using Application.Features.Accounts.Commands.UpdateCommand;
+using Application.Features.Accounts.Commands.ValidateResetTokenCommand;
 using Application.Features.Accounts.Commands.VerifyEmailCommand;
 using Application.Features.Accounts.Queries.GetByUsernameQuery;
 using Application.Models.Accounts;
@@ -149,9 +150,20 @@ namespace WebApi.Controllers
             return Ok(new { message = "Token revoked" });
         }
 
-            // Helpers
+        [AllowAnonymous]
+        [HttpPost("validate-reset-token")]
+        public async Task<IActionResult> ValidateResetTokenAsync(ValidateResetTokenCommand command)
+        {
+            await Mediator.Send(command);
 
-            private void setTokenCookie(string token)
+            return Ok(new { message = "Reset token is valid." });
+        }
+
+        []
+
+        // Helpers
+
+        private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
             {

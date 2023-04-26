@@ -16,7 +16,7 @@ namespace Application.Common.Interfaces
         
         Task ForgotPasswordAsync(string email, string origin);
         
-        Task ValidateResetTokenAsync(ValidateResetTokenRequest model);
+        Task ValidateResetTokenAsync(string? token);
         
         Task ResetPasswordAsync(string token, string password);
         
