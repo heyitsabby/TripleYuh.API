@@ -24,7 +24,7 @@ namespace Application.Common.Interfaces
         
         Task<AccountResponse> GetByUsernameAsync(string username);
         
-        Task<AccountResponse> CreateAsync(CreateRequest model);
+        Task<AccountResponse> CreateAsync(string username, string role, string email, string password);
         
         Task<AccountResponse> UpdateAsync(string username, string? password, string? role, string? email, string? origin);
         

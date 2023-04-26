@@ -1,11 +1,13 @@
 ﻿using Application.Common.Security;
 using Application.Features.Accounts.Commands.AuthenticateCommand;
+using Application.Features.Accounts.Commands.CreateAccountCommand;
+using Application.Features.Accounts.Commands.DeleteAccountCommand;
 using Application.Features.Accounts.Commands.ForgotPasswordCommand;
 using Application.Features.Accounts.Commands.RefreshTokenCommand;
 using Application.Features.Accounts.Commands.RegisterCommand;
 using Application.Features.Accounts.Commands.ResetPasswordCommand;
 using Application.Features.Accounts.Commands.RevokeTokenCommand;
-using Application.Features.Accounts.Commands.UpdateCommand;
+using Application.Features.Accounts.Commands.UpdateAccountCommand;
 using Application.Features.Accounts.Commands.ValidateResetTokenCommand;
 using Application.Features.Accounts.Commands.VerifyEmailCommand;
 using Application.Features.Accounts.Queries.GetAllQuery;
@@ -90,7 +92,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{username}")]
-        public async Task<ActionResult<AccountResponse>> UpdateAsync(string username, UpdateCommand command)
+        public async Task<ActionResult<AccountResponse>> UpdateAsync(string username, UpdateAccountCommand command)
         {
             // users can update their own account and admins can update any account
             if (username != Account?.Username && Account?.Role != Role.Admin)
@@ -110,6 +112,31 @@ namespace WebApi.Controllers
             var account = await Mediator.Send(command);
 
             return Ok(account);
+        }
+
+        [Authorize(Role.Admin)]
+        [HttpPost] 
+        public async Task<ActionResult<AccountResponse>> CreateAsync(CreateAccountCommand command)
+        {
+            var account = await Mediator.Send(command);
+
+            return Ok(account);
+        }
+
+        [HttpDelete("{username}")]
+        public async Task<IActionResult> DeleteAsync(string username)
+        {
+            // users can delete their own account and admins can delete any account
+            if (username != Account?.Username && Account?.Role != Role.Admin)
+            {
+                return Unauthorized(new { message = "Unauthorized" });
+            }
+
+            var command = new DeleteAccountCommand { Username = username };
+
+            await Mediator.Send(command);
+
+            return Ok(new { message = "Account deleted successfully." });
         }
 
         [AllowAnonymous]

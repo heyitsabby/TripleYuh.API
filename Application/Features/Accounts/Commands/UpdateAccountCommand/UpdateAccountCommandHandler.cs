@@ -2,18 +2,18 @@
 using Application.Models.Accounts;
 using MediatR;
 
-namespace Application.Features.Accounts.Commands.UpdateCommand
+namespace Application.Features.Accounts.Commands.UpdateAccountCommand
 {
-    public class UpdateCommandHandler : IRequestHandler<UpdateCommand, AccountResponse>
+    public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand, AccountResponse>
     {
         private readonly IAccountService accountService;
 
-        public UpdateCommandHandler(IAccountService accountService)
+        public UpdateAccountCommandHandler(IAccountService accountService)
         {
             this.accountService = accountService;
         }
 
-        public async Task<AccountResponse> Handle(UpdateCommand request, CancellationToken cancellationToken)
+        public async Task<AccountResponse> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
         {
             var account = await accountService.UpdateAsync(
                 request.Username, request.Password, request.Role, request.Email, request.Origin);

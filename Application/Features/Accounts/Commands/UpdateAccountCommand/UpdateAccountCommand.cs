@@ -1,9 +1,9 @@
 ﻿using Application.Models.Accounts;
 using MediatR;
 
-namespace Application.Features.Accounts.Commands.UpdateCommand
+namespace Application.Features.Accounts.Commands.UpdateAccountCommand
 {
-    public class UpdateCommand : IRequest<AccountResponse>
+    public class UpdateAccountCommand : IRequest<AccountResponse>
     {
         public string Username { get; set; } = string.Empty;
 

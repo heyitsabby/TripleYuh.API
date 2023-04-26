@@ -64,22 +64,33 @@ namespace Infrastructure.Services
             return response;
         }
 
-        public async Task<AccountResponse> CreateAsync(CreateRequest model)
+        public async Task<AccountResponse> CreateAsync(string username, string role, string email, string password)
         {
             // validate
-            if (await context.Accounts.AnyAsync(account => account.Email == model.Email))
+            if (await context.Accounts.AnyAsync(account => account.Email == email))
             {
-                throw new CreateResourceException($"Email '{model.Email}' is already registered.");
+                throw new CreateResourceException($"Email '{email}' is already registered.");
             }
 
             // map model to new account object
-            var account = mapper.Map<Account>(model);
+            // var account = mapper.Map<Account>(model);
+
+            var account = new Account 
+            {
+                Username = username,
+                Email = email
+            };
+
+            if (Enum.TryParse(role, out Role roleAsEnum))
+            {
+                account.Role = roleAsEnum;
+            }
 
             account.Created = DateTime.UtcNow;
 
             account.Verified = DateTime.UtcNow;
 
-            account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
             context.Accounts.Add(account);
 
