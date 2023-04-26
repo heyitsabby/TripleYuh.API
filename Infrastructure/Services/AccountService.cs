@@ -1,7 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Helpers;
-
+using Application.Models.Accounts;
 using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Persistence;
