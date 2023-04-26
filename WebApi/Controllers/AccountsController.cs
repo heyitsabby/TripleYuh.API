@@ -4,6 +4,7 @@ using Application.Features.Accounts.Commands.ForgotPasswordCommand;
 using Application.Features.Accounts.Commands.RefreshTokenCommand;
 using Application.Features.Accounts.Commands.RegisterCommand;
 using Application.Features.Accounts.Commands.ResetPasswordCommand;
+using Application.Features.Accounts.Commands.RevokeTokenCommand;
 using Application.Features.Accounts.Commands.UpdateCommand;
 using Application.Features.Accounts.Commands.VerifyEmailCommand;
 using Application.Features.Accounts.Queries.GetByUsernameQuery;
@@ -124,9 +125,33 @@ namespace WebApi.Controllers
             return response;
         }
 
-        // Helpers
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeTokenAsync(RevokeTokenCommand command)
+        {
+            // accept token from request body or cookie
+            command.Token ??= Request.Cookies["refreshToken"];
 
-        private void setTokenCookie(string token)
+            if (string.IsNullOrEmpty(command.Token))
+            {
+                return BadRequest(new { message = "Token is required" });
+            }
+
+            // users can revoke their own tokens and admins can revoke any tokens
+            if (!Account.OwnsToken(command.Token) && Account.Role != Role.Admin)
+            {
+                return Unauthorized(new { message = "Unsauthorized" });
+            }
+
+            command.IpAddress = ipAddress();
+
+            await Mediator.Send(command);
+
+            return Ok(new { message = "Token revoked" });
+        }
+
+            // Helpers
+
+            private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
             {
