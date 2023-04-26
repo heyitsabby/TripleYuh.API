@@ -9,6 +9,8 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
+            builder.ToTable("accounts");
+
             builder
                 .Property(account => account.Username)
                 .IsRequired()

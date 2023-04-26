@@ -12,9 +12,9 @@ namespace Application.Helpers
 
             CreateMap<Account, AuthenticateResponse>();
 
-            CreateMap<RegisterRequest, Account>();
+            //CreateMap<RegisterRequest, Account>();
 
-            CreateMap<CreateRequest, Account>();
+            //CreateMap<CreateRequest, Account>();
 
             //CreateMap<UpdateRequest, Account>()
             //    .ForAllMembers(x => x.Condition((src, dest, prop) =>

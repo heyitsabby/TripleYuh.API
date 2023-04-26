@@ -41,6 +41,8 @@ namespace Domain.Entities
         
         public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
+        public List<Post> Posts { get; set; } = new List<Post>();
+
         public bool OwnsToken(string token)
         {
             return this.RefreshTokens?.Find(x => x.Token == token) != null;
