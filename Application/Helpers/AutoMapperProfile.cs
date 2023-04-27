@@ -12,6 +12,12 @@ namespace Application.Helpers
 
             CreateMap<Account, AuthenticateResponse>();
 
+            CreateMap<TextPost, PostResponse>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
+
+            CreateMap<LinkPost, PostResponse>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
+
             //CreateMap<RegisterRequest, Account>();
 
             //CreateMap<CreateRequest, Account>();
@@ -21,7 +27,7 @@ namespace Application.Helpers
             //    {
             //        // ignore null & empty string properties
             //        if (prop == null) return false;
-                
+
             //        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
 
             //        // ignore null role
