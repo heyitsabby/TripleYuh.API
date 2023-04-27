@@ -1,6 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Models.Accounts;
+using Application.Models.Posts;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Rules;

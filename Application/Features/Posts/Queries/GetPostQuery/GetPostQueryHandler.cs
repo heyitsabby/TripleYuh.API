@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Application.Models.Accounts;
+using Application.Models.Posts;
 using MediatR;
 
 namespace Application.Features.Posts.Queries.GetPostQuery

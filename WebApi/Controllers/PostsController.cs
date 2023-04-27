@@ -5,7 +5,7 @@ using Application.Features.Posts.Commands.DeletePostCommand;
 using Application.Features.Posts.Commands.UpdatePostCommand;
 using Application.Features.Posts.Queries.GetAllPostsQuery;
 using Application.Features.Posts.Queries.GetPostQuery;
-using Application.Models.Accounts;
+using Application.Models.Posts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 

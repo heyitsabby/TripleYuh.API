@@ -1,4 +1,4 @@
-﻿using Application.Models.Accounts;
+﻿using Application.Models.Posts;
 
 namespace Application.Common.Interfaces
 {

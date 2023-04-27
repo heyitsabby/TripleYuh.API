@@ -1,4 +1,4 @@
-﻿namespace Application.Models.Accounts
+﻿namespace Application.Models.Posts
 {
     public class PostResponse
     {
@@ -14,7 +14,7 @@
 
         public DateTime Created { get; set; }
 
-        public DateTime? Updated  { get; set; }
+        public DateTime? Updated { get; set; }
 
         public string Username { get; set; } = string.Empty;
     }

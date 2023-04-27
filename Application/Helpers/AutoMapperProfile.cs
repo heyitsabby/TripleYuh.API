@@ -1,4 +1,5 @@
 ﻿using Application.Models.Accounts;
+using Application.Models.Posts;
 using AutoMapper;
 using Domain.Entities;
 
