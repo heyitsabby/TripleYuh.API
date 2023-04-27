@@ -80,9 +80,11 @@ namespace Infrastructure.Services
             await context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<PostResponse>> GetAllAsync()
+        public async Task<IEnumerable<PostResponse>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var posts = await context.Posts.Include(p => p.Account).ToListAsync();
+
+            return mapper.Map<IList<PostResponse>>(posts);
         }
 
         public async Task<PostResponse> GetAsync(int id)
