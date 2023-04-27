@@ -1,6 +1,7 @@
 ﻿using Application.Common.Security;
 using Application.Features.Posts.Commands.CreateLinkPostCommand;
 using Application.Features.Posts.Commands.CreateTextPostCommand;
+using Application.Features.Posts.Commands.DeletePostCommand;
 using Application.Features.Posts.Commands.UpdatePostCommand;
 using Application.Models.Accounts;
 using Domain.Entities;
@@ -53,6 +54,24 @@ namespace WebApi.Controllers
             var post = await Mediator.Send(command);
 
             return Ok(post);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id, DeletePostCommand command)
+        {
+            if (command.Id != id)
+            {
+                return BadRequest(new { message = "Ids don't match." });
+            }
+
+            if (command.Username != Account?.Username && Account?.Role != Role.Admin)
+            {
+                return Unauthorized(new { message = "Unauthorized" });
+            }
+
+            await Mediator.Send(command);
+
+            return NoContent();
         }
     }
 }

@@ -66,6 +66,20 @@ namespace Infrastructure.Services
             return response;
         }
 
+        public async Task DeleteAsync(int id, string? username)
+        {
+            var account = await context.Accounts
+              .Where(account => account.Username == username)
+              .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
+
+            var post = await context.Posts.FindAsync(id)
+                ?? throw new NotFoundResourceException($"Can't find post with id '${id}'.");
+
+            context.Posts.Remove(post);
+
+            await context.SaveChangesAsync();
+        }
+
         public async Task<PostResponse> UpdatePostAsync(int id, string? username, string? body)
         {
             var account = await context.Accounts
