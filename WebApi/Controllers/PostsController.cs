@@ -3,6 +3,7 @@ using Application.Features.Posts.Commands.CreateLinkPostCommand;
 using Application.Features.Posts.Commands.CreateTextPostCommand;
 using Application.Features.Posts.Commands.DeletePostCommand;
 using Application.Features.Posts.Commands.UpdatePostCommand;
+using Application.Features.Posts.Queries.GetPostQuery;
 using Application.Models.Accounts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,17 @@ namespace WebApi.Controllers
             await Mediator.Send(command);
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<PostResponse>> GetAsync(int id)
+        {
+            var query = new GetPostQuery { Id = id };
+
+            var post = await Mediator.Send(query);
+
+            return Ok(post);
         }
     }
 }

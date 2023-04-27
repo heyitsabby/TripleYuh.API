@@ -11,5 +11,9 @@ namespace Application.Common.Interfaces
         Task<PostResponse> UpdatePostAsync(int id, string? username, string? body);
 
         Task DeleteAsync(int id, string? username);
+
+        Task<PostResponse> GetAsync(int id);
+
+        Task<IEnumerable<PostResponse>> GetAllAsync();
     }
 }

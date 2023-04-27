@@ -73,11 +73,26 @@ namespace Infrastructure.Services
               .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var post = await context.Posts.FindAsync(id)
-                ?? throw new NotFoundResourceException($"Can't find post with id '${id}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with id '{id}'.");
 
             context.Posts.Remove(post);
 
             await context.SaveChangesAsync();
+        }
+
+        public Task<IEnumerable<PostResponse>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<PostResponse> GetAsync(int id)
+        {
+            var post = await context.Posts
+                .Include(p => p.Account)
+                .SingleOrDefaultAsync(p => p.Id == id)
+                ?? throw new NotFoundResourceException($"Can't find post with id '{id}'.");
+
+            return mapper.Map<PostResponse>(post);
         }
 
         public async Task<PostResponse> UpdatePostAsync(int id, string? username, string? body)
@@ -87,7 +102,7 @@ namespace Infrastructure.Services
                .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var post = await context.Posts.FindAsync(id) 
-                ?? throw new NotFoundResourceException($"Can't find post with id '${id}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with id '{id}'.");
 
             if (post.Type == PostType.Link)
             {
