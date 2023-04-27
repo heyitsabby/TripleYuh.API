@@ -9,5 +9,7 @@ namespace Application.Common.Interfaces
         Task<PostResponse> CreateLinkPostAsync(string? username, string title, string url);
 
         Task<PostResponse> UpdatePostAsync(int id, string? username, string? body);
+
+        Task DeleteAsync(int id, string? username);
     }
 }
