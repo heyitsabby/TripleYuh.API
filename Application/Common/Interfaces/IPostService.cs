@@ -7,5 +7,7 @@ namespace Application.Common.Interfaces
         Task<PostResponse> CreateTextPostAsync(string? username, string title, string? body);
 
         Task<PostResponse> CreateLinkPostAsync(string? username, string title, string url);
+
+        Task<PostResponse> UpdatePostAsync(int id, string? username, string? body);
     }
 }

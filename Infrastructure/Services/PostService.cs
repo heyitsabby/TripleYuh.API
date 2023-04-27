@@ -63,9 +63,34 @@ namespace Infrastructure.Services
 
             var response = mapper.Map<PostResponse>(post);
 
-            response.Username = post.Account.Username;
-
             return response;
+        }
+
+        public async Task<PostResponse> UpdatePostAsync(int id, string? username, string? body)
+        {
+            var account = await context.Accounts
+               .Where(account => account.Username == username)
+               .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
+
+            var post = await context.Posts.FindAsync(id) 
+                ?? throw new NotFoundResourceException($"Can't find post with id '${id}'.");
+
+            if (post.Type == PostType.Link)
+            {
+                throw new UpdateResourceException($"Can't update post '{id}'.");
+            }
+
+            var textPost = (TextPost)post;
+
+            textPost.Body = string.IsNullOrEmpty(body) ? null : body;
+
+            textPost.Updated = DateTime.UtcNow;
+
+            context.Posts.Update(textPost);
+
+            await context.SaveChangesAsync();
+
+            return mapper.Map<PostResponse>(textPost);
         }
     }
 }
