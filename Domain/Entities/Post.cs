@@ -12,6 +12,10 @@ namespace Domain.Entities
 
         public Account Account { get; set; } = new Account();
 
+        public DateTime Created { get; set; }
+
+        public DateTime? Updated { get; set; }
+
         public PostType Type { get; set; }
     }
 }
