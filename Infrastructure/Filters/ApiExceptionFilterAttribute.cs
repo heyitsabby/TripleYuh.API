@@ -18,7 +18,8 @@ namespace Infrastructure.Filters
                 { typeof(NotFoundResourceException), HandleNotFoundResourceException },
                 { typeof(InvalidTokenException), HandleInvalidTokenException },
                 { typeof(UpdateResourceException), HandleUpdateResourceException },
-                { typeof(EmailVerificationException), HandleEmailVerificationException }
+                { typeof(EmailVerificationException), HandleEmailVerificationException },
+                { typeof(ValidateResourceException), HandleValidateResourceException }
             };
         }
 
@@ -165,6 +166,21 @@ namespace Infrastructure.Filters
             };
 
             context.Result = new UnauthorizedObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleValidateResourceException(ExceptionContext context)
+        {
+            var exception = context.Exception as ValidateResourceException;
+
+            var details = new ProblemDetails
+            {
+                Title = "Failed to validate",
+                Detail = string.Join(", ", exception?.Errors)
+            };
+
+            context.Result = new UnprocessableEntityObjectResult(details);
 
             context.ExceptionHandled = true;
         }

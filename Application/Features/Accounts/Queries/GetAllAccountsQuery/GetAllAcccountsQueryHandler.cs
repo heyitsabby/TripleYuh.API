@@ -2,13 +2,13 @@
 using Application.Models.Accounts;
 using MediatR;
 
-namespace Application.Features.Accounts.Queries.GetAllQuery
+namespace Application.Features.Accounts.Queries.GetAllAccountsQuery
 {
-    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<AccountResponse>>
+    public class GetAllAcccountsQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<AccountResponse>>
     {
         private readonly IAccountService accountService;
 
-        public GetAllQueryHandler(IAccountService accountService)
+        public GetAllAcccountsQueryHandler(IAccountService accountService)
         {
             this.accountService = accountService;
         }

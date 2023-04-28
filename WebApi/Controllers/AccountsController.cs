@@ -10,8 +10,8 @@ using Application.Features.Accounts.Commands.RevokeTokenCommand;
 using Application.Features.Accounts.Commands.UpdateAccountCommand;
 using Application.Features.Accounts.Commands.ValidateResetTokenCommand;
 using Application.Features.Accounts.Commands.VerifyEmailCommand;
-using Application.Features.Accounts.Queries.GetAllQuery;
-using Application.Features.Accounts.Queries.GetByUsernameQuery;
+using Application.Features.Accounts.Queries.GetAllAccountsQuery;
+using Application.Features.Accounts.Queries.GetAccountByUsername;
 using Application.Models.Accounts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -84,7 +84,7 @@ namespace WebApi.Controllers
                 return Unauthorized(new { message = "Unauthorized" });
             }
 
-            var query = new GetByUsernameQuery { Username = username };
+            var query = new GetAccountByUsernameQuery { Username = username };
 
             var account = await Mediator.Send(query);
 
@@ -189,8 +189,10 @@ namespace WebApi.Controllers
 
         [Authorize(Role.Admin)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync(GetAllQuery query)
+        public async Task<ActionResult<IEnumerable<AccountResponse>>> GetAllAsync()
         {
+            var query = new GetAllQuery();
+
             var accounts = await Mediator.Send(query);
 
             return Ok(accounts);
