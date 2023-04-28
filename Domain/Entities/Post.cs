@@ -17,5 +17,7 @@ namespace Domain.Entities
         public DateTime? Updated { get; set; }
 
         public PostType Type { get; set; }
+
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

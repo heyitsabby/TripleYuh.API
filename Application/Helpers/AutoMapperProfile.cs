@@ -19,6 +19,9 @@ namespace Application.Helpers
             CreateMap<LinkPost, PostResponse>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
 
+            CreateMap<Comment, CommentResponse>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
+
             //CreateMap<RegisterRequest, Account>();
 
             //CreateMap<CreateRequest, Account>();

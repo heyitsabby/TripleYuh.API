@@ -43,6 +43,8 @@ namespace Domain.Entities
 
         public List<Post> Posts { get; set; } = new List<Post>();
 
+        public List<Comment> Comments { get; set; } = new List<Comment>();
+
         public bool OwnsToken(string token)
         {
             return this.RefreshTokens?.Find(x => x.Token == token) != null;
