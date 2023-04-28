@@ -7,6 +7,8 @@ namespace WebApi
     {
         public static IServiceCollection AddWebApiServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services
                 .AddControllers(options =>
                 {
@@ -18,6 +20,8 @@ namespace WebApi
                 {
                     // serialize enums as strings in api responses (e.g. Role)
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
