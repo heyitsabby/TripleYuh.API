@@ -16,7 +16,15 @@ namespace Domain.Entities
 
         public Account Account { get; set; } = new Account();
 
+        public int AccountId { get; set; }
+
         public Post Post { get; set; } = new TextPost();
+
+        public int PostId { get; set; }
+
+        public Comment? Parent { get; set; }
+
+        public int? ParentId { get; set; }
 
     }
 }

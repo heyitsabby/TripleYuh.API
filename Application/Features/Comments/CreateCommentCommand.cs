@@ -10,5 +10,7 @@ namespace Application.Features.Comments
         public string Username { get; set; } = string.Empty;
 
         public string Body { get; set; } = string.Empty;
+
+        public int? ParentId { get; set; }
     }
 }

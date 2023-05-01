@@ -15,7 +15,7 @@ namespace Application.Features.Comments
 
         public async Task<CommentResponse> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
-            var comment = await commentService.CreateAsync(request.PostId, request.Username, request.Body);
+            var comment = await commentService.CreateAsync(request.PostId, request.Username, request.ParentId, request.Body);
 
             return comment;
         }

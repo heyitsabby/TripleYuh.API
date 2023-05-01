@@ -20,14 +20,22 @@ namespace Infrastructure.Services
             this.mapper = mapper;
         }
 
-        public async Task<CommentResponse> CreateAsync(int postId, string username, string body)
+        public async Task<CommentResponse> CreateAsync(int postId, string username, int? parentId, string body)
         {
             var account = await context.Accounts
                 .Where(account => account.Username == username)
                 .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var post = await context.Posts.FindAsync(postId)
-                ?? throw new NotFoundResourceException($"Can't find post with postId '{postId}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
+
+            Comment? parentComment = null;
+
+            if (parentId != null)
+            {
+                parentComment = await context.Comments.FindAsync(parentId)
+                    ?? throw new NotFoundResourceException($"Can't find parent comment with id '{parentId}'.");
+            }
 
             var comment = new Comment 
             {
@@ -35,7 +43,8 @@ namespace Infrastructure.Services
                 Body = body,
                 Created = DateTime.UtcNow,
                 Reputation = CommentRules.DefaultReputation,
-                Post = post
+                Post = post,
+                Parent = parentComment
             };
 
             await context.Comments.AddAsync(comment);

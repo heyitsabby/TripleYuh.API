@@ -15,5 +15,7 @@
         public string Username { get; set; } = string.Empty;
 
         public int PostId { get; set; }
+
+        public int? ParentId { get; set; }
     }
 }
