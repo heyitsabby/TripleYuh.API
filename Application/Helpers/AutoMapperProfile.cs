@@ -1,4 +1,5 @@
 ﻿using Application.Models.Accounts;
+using Application.Models.Comments;
 using Application.Models.Posts;
 using AutoMapper;
 using Domain.Entities;
@@ -20,7 +21,8 @@ namespace Application.Helpers
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
 
             CreateMap<Comment, CommentResponse>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username))
+                .ForMember(dest => dest.PostId, opt => opt.MapFrom(src => src.Post.Id));
 
             //CreateMap<RegisterRequest, Account>();
 

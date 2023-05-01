@@ -27,6 +27,8 @@ namespace Infrastructure
             services.AddScoped<IEmailService, EmailService>();
 
             services.AddScoped<IPostService, PostService>();
+
+            services.AddScoped<ICommentService, CommentService>();
             
             return services;
         }
