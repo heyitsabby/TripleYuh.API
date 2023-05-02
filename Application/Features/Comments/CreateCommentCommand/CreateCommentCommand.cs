@@ -1,7 +1,7 @@
 ﻿using Application.Models.Comments;
 using MediatR;
 
-namespace Application.Features.Comments
+namespace Application.Features.Comments.CreateCommentCommand
 {
     public class CreateCommentCommand : IRequest<CommentResponse>
     {
@@ -12,5 +12,7 @@ namespace Application.Features.Comments
         public string Body { get; set; } = string.Empty;
 
         public int? ParentId { get; set; }
+
+
     }
 }

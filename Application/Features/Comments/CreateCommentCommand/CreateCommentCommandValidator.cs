@@ -1,7 +1,7 @@
 ﻿using Domain.Rules;
 using FluentValidation;
 
-namespace Application.Features.Comments
+namespace Application.Features.Comments.CreateCommentCommand
 {
     public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
     {

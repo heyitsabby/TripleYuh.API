@@ -19,6 +19,8 @@ namespace Infrastructure.Persistence.Configurations
             builder
                 .Property(post => post.Reputation)
                 .HasDefaultValue(CommentRules.DefaultReputation);
+
+
         }
     }
 }

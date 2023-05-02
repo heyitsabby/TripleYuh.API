@@ -17,5 +17,7 @@
         public int PostId { get; set; }
 
         public int? ParentId { get; set; }
+
+        public List<int> ChildrenIds { get; set; } = new List<int>();
     }
 }

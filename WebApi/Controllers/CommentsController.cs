@@ -1,5 +1,5 @@
 ﻿using Application.Common.Security;
-using Application.Features.Comments;
+using Application.Features.Comments.CreateCommentCommand;
 using Application.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
 

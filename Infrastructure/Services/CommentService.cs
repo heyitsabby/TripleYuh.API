@@ -29,13 +29,7 @@ namespace Infrastructure.Services
             var post = await context.Posts.FindAsync(postId)
                 ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
 
-            Comment? parentComment = null;
-
-            if (parentId != null)
-            {
-                parentComment = await context.Comments.FindAsync(parentId)
-                    ?? throw new NotFoundResourceException($"Can't find parent comment with id '{parentId}'.");
-            }
+            var parentComment = await context.Comments.FindAsync(parentId);
 
             var comment = new Comment 
             {
@@ -51,6 +45,10 @@ namespace Infrastructure.Services
 
             await context.SaveChangesAsync();
 
+            parentComment?.ChildrenIds.Add(comment.Id);
+
+            await context.SaveChangesAsync();
+
             return mapper.Map<CommentResponse>(comment);
         }
 
@@ -58,7 +56,7 @@ namespace Infrastructure.Services
         {
             var account = await context.Accounts
                 .Where(account => account.Username == username)
-                .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
+                .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'.");
 
             var comment = await context.Comments.FindAsync(id)
                 ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");

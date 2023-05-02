@@ -12,6 +12,8 @@ namespace Domain.Entities
 
         public Account Account { get; set; } = new Account();
 
+        public int AccountId { get; set; }  
+
         public DateTime Created { get; set; }
 
         public DateTime? Updated { get; set; }
