@@ -27,7 +27,7 @@ namespace Infrastructure.Services
                 .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var post = await context.Posts.FindAsync(postId)
-                ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with commentId '{postId}'.");
 
             var parentComment = await context.Comments.FindAsync(parentId);
 
@@ -52,16 +52,16 @@ namespace Infrastructure.Services
             return mapper.Map<CommentResponse>(comment);
         }
 
-        public async Task DeleteAsync(int id, string username)
+        public async Task DeleteAsync(int commentId, string username)
         {
             var account = await context.Accounts
                 .Where(account => account.Username == username)
                 .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'.");
 
-            var comment = await context.Comments.FindAsync(id)
-                ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
-
-            if (comment.Account.Username != username && account.Role != Role.Admin)
+            var comment = await context.Comments.FindAsync(commentId)
+                ?? throw new NotFoundResourceException($"Can't find comment with id '{commentId}'.");
+            
+            if (comment.Account.Username != account.Username && account.Role != Role.Admin)
             {
                 throw new UnauthorizedException("Unauthorized to perform deletion.");
             }
@@ -86,7 +86,7 @@ namespace Infrastructure.Services
         public async Task<CommentResponse> GetAsync(int id)
         {
             var comment = await context.Comments.FindAsync(id)
-                ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
+                ?? throw new NotFoundResourceException($"Can't find comment with commentId '{id}'.");
 
             return mapper.Map<CommentResponse>(comment);
         }
@@ -96,7 +96,7 @@ namespace Infrastructure.Services
             var post = await context.Posts
                 .Include(p => p.Account)
                 .SingleOrDefaultAsync(p => p.Id == postId)
-                ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with commentId '{postId}'.");
 
             var comments = await context.Comments
                 .Where(comment => comment.Post.Id ==  post.Id)
@@ -112,7 +112,7 @@ namespace Infrastructure.Services
                 .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var comment = await context.Comments.FindAsync(id)
-                ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
+                ?? throw new NotFoundResourceException($"Can't find comment with commentId '{id}'.");
 
             comment.Body = body;
 

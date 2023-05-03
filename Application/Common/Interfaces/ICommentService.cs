@@ -8,7 +8,7 @@ namespace Application.Common.Interfaces
 
         Task<CommentResponse> UpdateAsync(int id, string username, string body);
 
-        Task DeleteAsync(int id, string username);
+        Task DeleteAsync(int commentId, string username);
 
         Task<CommentResponse> GetAsync(int id);
 

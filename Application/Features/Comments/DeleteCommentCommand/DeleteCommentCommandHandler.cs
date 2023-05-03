@@ -19,7 +19,7 @@ namespace Application.Features.Comments.DeleteCommentCommand
 
         public async Task Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
-            await commentService.DeleteAsync(request.Id, request.Username);
+            await commentService.DeleteAsync(request.CommentId, request.Username);
         }
     }
 }
