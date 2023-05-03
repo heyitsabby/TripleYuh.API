@@ -19,7 +19,8 @@ namespace Infrastructure.Filters
                 { typeof(InvalidTokenException), HandleInvalidTokenException },
                 { typeof(UpdateResourceException), HandleUpdateResourceException },
                 { typeof(EmailVerificationException), HandleEmailVerificationException },
-                { typeof(ValidateResourceException), HandleValidateResourceException }
+                { typeof(ValidateResourceException), HandleValidateResourceException },
+                { typeof(UnauthorizedException), HandleUnauthorizedException }
             };
         }
 
@@ -181,6 +182,21 @@ namespace Infrastructure.Filters
             };
 
             context.Result = new UnprocessableEntityObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleUnauthorizedException(ExceptionContext context) 
+        {
+            var exception = context.Exception as UnauthorizedException;
+
+            var details = new ProblemDetails
+            {
+                Title = "Failed to authorize.",
+                Detail = exception?.Message
+            };
+
+            context.Result = new UnauthorizedObjectResult(details);
 
             context.ExceptionHandled = true;
         }

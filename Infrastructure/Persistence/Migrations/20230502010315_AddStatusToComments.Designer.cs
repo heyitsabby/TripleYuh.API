@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230502010315_AddStatusToComments")]
+    partial class AddStatusToComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,26 +39,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("accept_terms");
 
-                    b.Property<DateTime?>("Archived")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("archived");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("deleted_by");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -94,10 +80,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("updated_by");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(40)
@@ -131,10 +113,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("account_id");
 
-                    b.Property<DateTime?>("Archived")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("archived");
-
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(10000)
@@ -150,18 +128,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTime?>("Deleted")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("deleted_by");
+                        .HasColumnName("modified");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer")
@@ -177,13 +146,12 @@ namespace Infrastructure.Persistence.Migrations
                         .HasDefaultValue(1)
                         .HasColumnName("reputation");
 
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated");
-
-                    b.Property<string>("UpdatedBy")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text")
-                        .HasColumnName("updated_by");
+                        .HasDefaultValue("Active")
+                        .HasColumnName("status");
 
                     b.HasKey("Id")
                         .HasName("pk_comments");
@@ -213,26 +181,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("account_id");
 
-                    b.Property<DateTime?>("Archived")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("archived");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("deleted_by");
 
                     b.Property<int>("Reputation")
                         .ValueGeneratedOnAdd()
@@ -256,10 +207,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("updated_by");
 
                     b.HasKey("Id")
                         .HasName("pk_posts");

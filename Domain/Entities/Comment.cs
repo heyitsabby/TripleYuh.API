@@ -2,15 +2,11 @@
 
 namespace Domain.Entities
 {
-    public class Comment
+    public class Comment : AuditableEntity
     {
         public int Id { get; set; }
 
         public string Body { get; set; } = string.Empty;
-
-        public DateTime Created { get; set; }
-
-        public DateTime? Modified { get; set; }
 
         public int Reputation { get; set; } = CommentRules.DefaultReputation;
 

@@ -12,15 +12,13 @@ namespace Infrastructure.Persistence.Configurations
             builder.ToTable("comments");
 
             builder
-                .Property(post => post.Body)
+                .Property(comment => comment.Body)
                 .IsRequired()
                 .HasMaxLength(CommentRules.BodyMaximumLength);
 
             builder
-                .Property(post => post.Reputation)
+                .Property(comment => comment.Reputation)
                 .HasDefaultValue(CommentRules.DefaultReputation);
-
-
         }
     }
 }

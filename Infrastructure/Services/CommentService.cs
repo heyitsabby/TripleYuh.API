@@ -35,7 +35,7 @@ namespace Infrastructure.Services
             {
                 Account = account,
                 Body = body,
-                Created = DateTime.UtcNow,
+                CreatedBy = account.Username,
                 Reputation = CommentRules.DefaultReputation,
                 Post = post,
                 Parent = parentComment
@@ -61,6 +61,12 @@ namespace Infrastructure.Services
             var comment = await context.Comments.FindAsync(id)
                 ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
 
+            if (comment.Account.Username != username && account.Role != Role.Admin)
+            {
+                throw new UnauthorizedException("Unauthorized to perform deletion.");
+            }
+
+            comment.DeletedBy = account.Username;
 
             context.Comments.Remove(comment);
 
@@ -70,8 +76,8 @@ namespace Infrastructure.Services
         public async Task<IEnumerable<CommentResponse>> GetAllAsync()
         {
             var comments = await context.Comments
-                .Include(p => p.Account)
-                .Include(p => p.Post)
+                .Include(comment => comment.Account)
+                .Include(comment => comment.Post)
                 .ToListAsync();
 
             return mapper.Map<IList<CommentResponse>>(comments);
@@ -110,7 +116,7 @@ namespace Infrastructure.Services
 
             comment.Body = body;
 
-            comment.Modified = DateTime.UtcNow;
+            comment.Updated = DateTime.UtcNow;
 
             context.Comments.Update(comment);
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Account
+    public class Account : AuditableEntity
     {
         public int Id { get; set; }
 
@@ -34,10 +34,6 @@ namespace Domain.Entities
         public DateTime? ResetTokenExpires { get; set; }
         
         public DateTime? PasswordReset { get; set; }
-        
-        public DateTime Created { get; set; }
-        
-        public DateTime? Updated { get; set; }
         
         public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 

@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace Infrastructure.Persistence
 {
@@ -28,6 +29,30 @@ namespace Infrastructure.Persistence
             base.OnModelCreating(builder);
 
             builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entity in ChangeTracker.Entries<AuditableEntity>())
+            {
+                switch (entity.State)
+                {
+                    case EntityState.Added:
+                        entity.Entity.Created = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        entity.Entity.Updated = entity.Entity.Deleted != null
+                        ? entity.Entity.Updated
+                            : DateTime.UtcNow;
+                        break;
+                    case EntityState.Deleted:
+                        entity.Entity.Deleted = DateTime.UtcNow;
+                        entity.State = EntityState.Modified;
+                        break;
+                }
+            }
+            
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
