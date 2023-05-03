@@ -27,7 +27,7 @@ namespace Infrastructure.Services
                 .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var post = await context.Posts.FindAsync(postId)
-                ?? throw new NotFoundResourceException($"Can't find post with commentId '{postId}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
 
             var parentComment = await context.Comments.FindAsync(parentId);
 
@@ -86,7 +86,12 @@ namespace Infrastructure.Services
         public async Task<CommentResponse> GetAsync(int id)
         {
             var comment = await context.Comments.FindAsync(id)
-                ?? throw new NotFoundResourceException($"Can't find comment with commentId '{id}'.");
+                ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
+
+            if (comment.Deleted != null)
+            {
+                throw new NotFoundResourceException($"Comment has been deleted.");
+            }
 
             return mapper.Map<CommentResponse>(comment);
         }
@@ -96,10 +101,10 @@ namespace Infrastructure.Services
             var post = await context.Posts
                 .Include(p => p.Account)
                 .SingleOrDefaultAsync(p => p.Id == postId)
-                ?? throw new NotFoundResourceException($"Can't find post with commentId '{postId}'.");
+                ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
 
             var comments = await context.Comments
-                .Where(comment => comment.Post.Id ==  post.Id)
+                .Where(comment => comment.Post.Id ==  post.Id && comment.Deleted == null)
                 .ToListAsync();
 
             return mapper.Map<IList<CommentResponse>>(comments);
@@ -112,11 +117,21 @@ namespace Infrastructure.Services
                 .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'");
 
             var comment = await context.Comments.FindAsync(id)
-                ?? throw new NotFoundResourceException($"Can't find comment with commentId '{id}'.");
+                ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
+
+            if (comment.Deleted == null)
+            {
+                throw new NotFoundResourceException($"Comment has been deleted.");
+            }
+
+            if (comment.Account.Username != account.Username && account.Role != Role.Admin)
+            {
+                throw new UnauthorizedException("Unauthorized to perform update.");
+            }
 
             comment.Body = body;
 
-            comment.Updated = DateTime.UtcNow;
+            comment.UpdatedBy = account.Username;
 
             context.Comments.Update(comment);
 
