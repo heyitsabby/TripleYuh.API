@@ -32,7 +32,7 @@ namespace Infrastructure.Services
                 Url = url,
                 Account = account,
                 Reputation = PostRules.DefaultReputation,
-                Created = DateTime.UtcNow
+                CreatedBy = account.Username
             };
 
             await context.Posts.AddAsync(post);
@@ -54,7 +54,7 @@ namespace Infrastructure.Services
                 Body = body,
                 Account = account,
                 Reputation = PostRules.DefaultReputation,
-                Created = DateTime.UtcNow
+                CreatedBy = account.Username
             };
 
             await context.Posts.AddAsync(post);
@@ -74,6 +74,13 @@ namespace Infrastructure.Services
 
             var post = await context.Posts.FindAsync(id)
                 ?? throw new NotFoundResourceException($"Can't find post with id '{id}'.");
+
+            if (post.Account.Username != account.Username)
+            {
+                throw new UnauthorizedException("Unauthorized to perform deletion.");
+            }
+            
+            post.DeletedBy = account.Username;
 
             context.Posts.Remove(post);
 
@@ -115,7 +122,7 @@ namespace Infrastructure.Services
 
             textPost.Body = string.IsNullOrEmpty(body) ? null : body;
 
-            textPost.Updated = DateTime.UtcNow;
+            textPost.UpdatedBy = account.Username;
 
             context.Posts.Update(textPost);
 
