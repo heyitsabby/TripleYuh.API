@@ -2,7 +2,7 @@
 using Application.Models.Comments;
 using MediatR;
 
-namespace Application.Features.Comments.CreateCommentCommand
+namespace Application.Features.Comments.Commands.CreateCommentCommand
 {
     public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CommentResponse>
     {

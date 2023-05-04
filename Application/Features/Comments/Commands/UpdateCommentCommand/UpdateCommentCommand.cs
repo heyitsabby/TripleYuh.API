@@ -1,7 +1,7 @@
 ﻿using Application.Models.Comments;
 using MediatR;
 
-namespace Application.Features.Comments.UpdateCommentCommand
+namespace Application.Features.Comments.Commands.UpdateCommentCommand
 {
     public class UpdateCommentCommand : IRequest<CommentResponse>
     {

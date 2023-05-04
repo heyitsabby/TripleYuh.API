@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Comments.DeleteCommentCommand
+namespace Application.Features.Comments.Commands.DeleteCommentCommand
 {
     internal class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand>
     {

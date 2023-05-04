@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Comments.UpdateCommentCommand
+namespace Application.Features.Comments.Commands.UpdateCommentCommand
 {
     public class UpdateCommentCommandValidator : AbstractValidator<UpdateCommentCommand>
     {

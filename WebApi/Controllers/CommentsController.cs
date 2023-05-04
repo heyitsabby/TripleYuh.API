@@ -1,7 +1,7 @@
 ﻿using Application.Common.Security;
-using Application.Features.Comments.CreateCommentCommand;
-using Application.Features.Comments.DeleteCommentCommand;
-using Application.Features.Comments.UpdateCommentCommand;
+using Application.Features.Comments.Commands.CreateCommentCommand;
+using Application.Features.Comments.Commands.DeleteCommentCommand;
+using Application.Features.Comments.Commands.UpdateCommentCommand;
 using Application.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
 
