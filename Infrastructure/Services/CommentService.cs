@@ -119,7 +119,7 @@ namespace Infrastructure.Services
             var comment = await context.Comments.FindAsync(id)
                 ?? throw new NotFoundResourceException($"Can't find comment with id '{id}'.");
 
-            if (comment.Deleted == null)
+            if (comment.Deleted != null)
             {
                 throw new NotFoundResourceException($"Comment has been deleted.");
             }
