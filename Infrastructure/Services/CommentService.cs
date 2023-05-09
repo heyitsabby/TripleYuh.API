@@ -144,5 +144,17 @@ namespace Infrastructure.Services
             return mapper.Map<CommentResponse>(comment);
             
         }
+
+        public async Task<IEnumerable<CommentResponse>> GetAllByUsernameAsync(string username)
+        {
+            var account = await context.Accounts
+                .Include(account => account.Comments)
+                .Where(a => a.Username == username)
+                .SingleOrDefaultAsync() ?? throw new NotFoundResourceException($"Can't find account '{username}'.");
+
+            var comments = account.Comments;
+
+            return mapper.Map<IList<CommentResponse>>(comments);
+        }
     }
 }

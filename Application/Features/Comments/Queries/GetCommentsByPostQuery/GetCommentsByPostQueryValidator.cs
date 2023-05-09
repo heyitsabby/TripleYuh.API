@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Comments.Queries
+namespace Application.Features.Comments.Queries.GetCommentsByPostQuery
 {
     public class GetCommentsByPostQueryValidator : AbstractValidator<GetCommentsByPostQuery>
     {

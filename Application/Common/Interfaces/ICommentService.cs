@@ -14,6 +14,8 @@ namespace Application.Common.Interfaces
 
         Task<IEnumerable<CommentResponse>> GetAllByPostAsync(int postId);
 
+        Task<IEnumerable<CommentResponse>> GetAllByUsernameAsync(string username);
+
         Task<IEnumerable<CommentResponse>> GetAllAsync();
     }
 }

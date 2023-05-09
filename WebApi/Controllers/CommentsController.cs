@@ -2,7 +2,8 @@
 using Application.Features.Comments.Commands.CreateCommentCommand;
 using Application.Features.Comments.Commands.DeleteCommentCommand;
 using Application.Features.Comments.Commands.UpdateCommentCommand;
-using Application.Features.Comments.Queries;
+using Application.Features.Comments.Queries.GetCommentsByPostQuery;
+using Application.Features.Comments.Queries.GetCommentsByUsernameQuery;
 using Application.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,6 +70,17 @@ namespace WebApi.Controllers
         public async Task<ActionResult<IEnumerable<CommentResponse>>> GetAllByPostAsync(int postId)
         {
             var query = new GetCommentsByPostQuery { PostId = postId };
+
+            var response = await Mediator.Send(query);
+
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/api/accounts/{username}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentResponse>>> GetAllByUsernameAsync(string username)
+        {
+            var query = new GetCommentsByUsernameQuery { Username = username };
 
             var response = await Mediator.Send(query);
 
