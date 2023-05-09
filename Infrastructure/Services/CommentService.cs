@@ -104,8 +104,8 @@ namespace Infrastructure.Services
         public async Task<IEnumerable<CommentResponse>> GetAllByPostAsync(int postId)
         {
             var post = await context.Posts
-                .Include(p => p.Account)
                 .Include(p => p.Comments)
+                .ThenInclude(c => c.Account)
                 .SingleOrDefaultAsync(p => p.Id == postId)
                 ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
 
