@@ -22,6 +22,6 @@ namespace Domain.Entities
 
         public int? ParentId { get; set; }
 
-        public List<int> ChildrenIds { get; set; } = new List<int>();
+        public List<int> Path { get; set; } = new List<int>();
     }
 }

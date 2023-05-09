@@ -2,6 +2,7 @@
 using Application.Features.Comments.Commands.CreateCommentCommand;
 using Application.Features.Comments.Commands.DeleteCommentCommand;
 using Application.Features.Comments.Commands.UpdateCommentCommand;
+using Application.Features.Comments.Queries;
 using Application.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,6 +60,17 @@ namespace WebApi.Controllers
             }
 
             var response = await Mediator.Send(command);
+
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/api/posts/{postId}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentResponse>>> GetAllByPostAsync(int postId)
+        {
+            var query = new GetCommentsByPostQuery { PostId = postId };
+
+            var response = await Mediator.Send(query);
 
             return Ok(response);
         }

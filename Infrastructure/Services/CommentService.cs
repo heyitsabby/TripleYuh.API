@@ -31,7 +31,7 @@ namespace Infrastructure.Services
 
             var parentComment = await context.Comments.FindAsync(parentId);
 
-            var comment = new Comment 
+            var comment = new Comment
             {
                 Account = account,
                 Body = body,
@@ -41,11 +41,16 @@ namespace Infrastructure.Services
                 Parent = parentComment
             };
 
+            if (parentComment != null)
+            {
+                comment.Path = parentComment.Path.ToList();
+            }
+
             await context.Comments.AddAsync(comment);
 
             await context.SaveChangesAsync();
 
-            parentComment?.ChildrenIds.Add(comment.Id);
+            comment.Path.Add(comment.Id);
 
             await context.SaveChangesAsync();
 
@@ -96,16 +101,15 @@ namespace Infrastructure.Services
             return mapper.Map<CommentResponse>(comment);
         }
 
-        public async Task<IEnumerable<CommentResponse>> GetAllByPostIdAsync(int postId)
+        public async Task<IEnumerable<CommentResponse>> GetAllByPostAsync(int postId)
         {
             var post = await context.Posts
                 .Include(p => p.Account)
+                .Include(p => p.Comments)
                 .SingleOrDefaultAsync(p => p.Id == postId)
                 ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
 
-            var comments = await context.Comments
-                .Where(comment => comment.Post.Id ==  post.Id && comment.Deleted == null)
-                .ToListAsync();
+            var comments = post.Comments;
 
             return mapper.Map<IList<CommentResponse>>(comments);
         }

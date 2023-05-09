@@ -12,7 +12,7 @@ namespace Application.Common.Interfaces
 
         Task<CommentResponse> GetAsync(int id);
 
-        Task<IEnumerable<CommentResponse>> GetAllByPostIdAsync(int postId);
+        Task<IEnumerable<CommentResponse>> GetAllByPostAsync(int postId);
 
         Task<IEnumerable<CommentResponse>> GetAllAsync();
     }
