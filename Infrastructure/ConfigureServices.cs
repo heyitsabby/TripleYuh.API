@@ -29,6 +29,8 @@ namespace Infrastructure
             services.AddScoped<IPostService, PostService>();
 
             services.AddScoped<ICommentService, CommentService>();
+
+            services.AddScoped<IVoteService, VoteService>();
             
             return services;
         }

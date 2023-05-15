@@ -14,6 +14,10 @@ namespace Infrastructure.Persistence
 
         public DbSet<Comment> Comments { get; set; } = null!;
 
+        public DbSet<CommentVote> CommentVotes { get; set; } = null!;
+
+        public DbSet<PostVote> PostVotes { get; set; } = null!;
+
         public DataContext()
         {
             

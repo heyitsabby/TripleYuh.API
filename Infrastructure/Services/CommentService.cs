@@ -41,9 +41,15 @@ namespace Infrastructure.Services
                 Parent = parentComment
             };
 
+            if (parentComment != null && parentComment.PostId != post.Id)
+            {
+                throw new CreateResourceException("Posts don't match.");
+            }
+
             if (parentComment != null)
             {
                 comment.Path = parentComment.Path.ToList();
+
             }
 
             await context.Comments.AddAsync(comment);

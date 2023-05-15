@@ -1,6 +1,7 @@
 ﻿using Application.Models.Accounts;
 using Application.Models.Comments;
 using Application.Models.Posts;
+using Application.Models.Votes;
 using AutoMapper;
 using Domain.Entities;
 
@@ -21,6 +22,12 @@ namespace Application.Helpers
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
 
             CreateMap<Comment, CommentResponse>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
+
+            CreateMap<PostVote, VoteResponse>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
+
+            CreateMap<CommentVote, VoteResponse>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Account.Username));
 
             //CreateMap<RegisterRequest, Account>();
