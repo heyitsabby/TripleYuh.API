@@ -18,7 +18,7 @@ namespace Infrastructure.Persistence
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<DataContext>()
                 //.UseNpgsql(connectionString, builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName))
-                .UseNpgsql("Server=127.0.0.1;Port=5432;Database=tripleyuh_tst;User Id=tripleyuh_admin;Password=fivey;")
+                .UseNpgsql(connectionString)
                 .UseSnakeCaseNamingConvention();
 
             return new DataContext(dbContextOptionsBuilder.Options);
