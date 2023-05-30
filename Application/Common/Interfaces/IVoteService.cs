@@ -11,5 +11,7 @@ namespace Application.Common.Interfaces
         Task<VoteResponse> VoteOnPostAsync(int value, int postId, string username);
 
         Task<VoteResponse> RemovePostVoteAsync(int postId, string username);
+
+        Task UpdateAllPostsReputationsAsync();
     }
 }

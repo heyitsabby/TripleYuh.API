@@ -4,6 +4,7 @@ using Application.Models.Votes;
 using AutoMapper;
 using Domain.Rules;
 using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
 {
@@ -71,7 +72,7 @@ namespace Infrastructure.Services
 
         public async Task<VoteResponse> VoteOnCommentAsync(int value, int commentId, string username)
         {
-            if (value != VoteRules.Upvote || value != VoteRules.Downvote)
+            if (value != VoteRules.Upvote && value != VoteRules.Downvote)
             {
                 throw new VoteException("Invalid value");
             }
@@ -115,7 +116,7 @@ namespace Infrastructure.Services
 
         public async Task<VoteResponse> VoteOnPostAsync(int value, int postId, string username)
         {
-            if (value != VoteRules.Upvote || value != VoteRules.Downvote)
+            if (value != VoteRules.Upvote && value != VoteRules.Downvote)
             {
                 throw new VoteException("Invalid value");
             }
@@ -123,7 +124,7 @@ namespace Infrastructure.Services
             var account = context.Accounts.Where(account => account.Username == username)
                     .SingleOrDefault() ?? throw new NotFoundResourceException($"Can't find username '{username}'");
 
-            var comment = context.Posts
+            var post = context.Posts
                 .Where(post => post.Id == postId)
                 .SingleOrDefault() ?? throw new NotFoundResourceException($"Can't find post with id '{postId}'.");
 
@@ -138,7 +139,9 @@ namespace Infrastructure.Services
                 {
                     Value = value,
                     Account = account,
-                    CreatedBy = account.Username
+                    CreatedBy = account.Username,
+                    Post = post,
+                    PostId = postId
                 };
 
                 context.PostVotes.Add(vote);
@@ -152,9 +155,31 @@ namespace Infrastructure.Services
 
             await context.SaveChangesAsync();
 
+            // Update post's reputation
+            post.Reputation = PostRules.DefaultReputation + await context.PostVotes.SumAsync(vote => vote.Value);
+
+            context.Posts.Update(post);
+
+            await context.SaveChangesAsync();
+
             var response = mapper.Map<VoteResponse>(vote);
 
             return response;
+        }
+
+        public async Task UpdateAllPostsReputationsAsync()
+        {
+           
+            foreach (var post in context.Posts)
+            {
+                post.Reputation = PostRules.DefaultReputation + await context.PostVotes
+                    .Where(vote => vote.PostId == post.Id)
+                    .SumAsync(vote => vote.Value);
+
+               context.Posts.Update(post);
+            }
+
+            await context.SaveChangesAsync();
         }
     }
 }

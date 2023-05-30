@@ -11,8 +11,6 @@ namespace WebApi.Controllers
         [HttpPost("/api/posts/{postId:int}/votes")]
         public async Task<ActionResult<VoteResponse>> VoteOnPostAsync(int postId, VoteOnPostCommand command)
         {
-
-
             command.PostId = postId;
             
             var response = await Mediator.Send(command);

@@ -1,10 +1,12 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Authorization;
+using Infrastructure.BackgroundJobs;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 
 namespace Infrastructure
 {
@@ -31,7 +33,19 @@ namespace Infrastructure
             services.AddScoped<ICommentService, CommentService>();
 
             services.AddScoped<IVoteService, VoteService>();
-            
+
+            services.AddQuartz(q =>
+            {
+                // Use a scoped container to create jobs
+                q.UseMicrosoftDependencyInjectionJobFactory();
+
+                q.AddJobAndTrigger<UpdatePostsReputationsJob>(configuration);
+            });
+
+            services.AddQuartzHostedService(
+                   q => q.WaitForJobsToComplete = true);
+
+
             return services;
         }
 
