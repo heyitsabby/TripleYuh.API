@@ -34,12 +34,16 @@ namespace Infrastructure
 
             services.AddScoped<IVoteService, VoteService>();
 
+            services.AddScoped<IReputationService, ReputationService>();
+
             services.AddQuartz(q =>
             {
                 // Use a scoped container to create jobs
                 q.UseMicrosoftDependencyInjectionJobFactory();
 
+                // Add jobs and their triggers
                 q.AddJobAndTrigger<UpdatePostsReputationsJob>(configuration);
+                q.AddJobAndTrigger<UpdateCommentsReputationsJob>(configuration);
             });
 
             services.AddQuartzHostedService(

@@ -1,7 +1,6 @@
 using Application;
 using Application.Helpers;
 using Infrastructure;
-using Microsoft.Extensions.Configuration;
 using WebApi;
 using WebApi.Middleware;
 

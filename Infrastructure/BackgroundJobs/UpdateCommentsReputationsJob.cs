@@ -4,18 +4,18 @@ using Quartz;
 namespace Infrastructure.BackgroundJobs
 {
     [DisallowConcurrentExecution]
-    public class UpdatePostsReputationsJob : IJob
+    public class UpdateCommentsReputationsJob : IJob
     {
         private readonly IReputationService reputationService;
 
-        public UpdatePostsReputationsJob(IReputationService reputationService)
+        public UpdateCommentsReputationsJob(IReputationService reputationService)
         {
             this.reputationService = reputationService;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            await reputationService.UpdateAllPostsReputationsAsync();
+            await reputationService.UpdateAllCommentsReputationsAsync();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Infrastructure.Filters
                 { typeof(UpdateResourceException), HandleUpdateResourceException },
                 { typeof(EmailVerificationException), HandleEmailVerificationException },
                 { typeof(ValidateResourceException), HandleValidateResourceException },
+                { typeof(VoteException), HandleVoteException },
                 { typeof(UnauthorizedException), HandleUnauthorizedException }
             };
         }
@@ -197,6 +198,21 @@ namespace Infrastructure.Filters
             };
 
             context.Result = new UnauthorizedObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleVoteException(ExceptionContext context)
+        {
+            var exception = context.Exception as VoteException;
+
+            var details = new ProblemDetails
+            {
+                Title = "Failed to vote.",
+                Detail = exception?.Message
+            };
+
+            context.Result = new UnprocessableEntityObjectResult(details);
 
             context.ExceptionHandled = true;
         }

@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Models.Votes;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Rules;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -95,7 +96,9 @@ namespace Infrastructure.Services
                 {
                     Value = value,
                     Account = account,
-                    CreatedBy = account.Username
+                    CreatedBy = account.Username,
+                    Comment = comment,
+                    CommentId = commentId
                 };
 
                 context.CommentVotes.Add(vote);
@@ -155,31 +158,9 @@ namespace Infrastructure.Services
 
             await context.SaveChangesAsync();
 
-            // Update post's reputation
-            post.Reputation = PostRules.DefaultReputation + await context.PostVotes.SumAsync(vote => vote.Value);
-
-            context.Posts.Update(post);
-
-            await context.SaveChangesAsync();
-
             var response = mapper.Map<VoteResponse>(vote);
 
             return response;
-        }
-
-        public async Task UpdateAllPostsReputationsAsync()
-        {
-           
-            foreach (var post in context.Posts)
-            {
-                post.Reputation = PostRules.DefaultReputation + await context.PostVotes
-                    .Where(vote => vote.PostId == post.Id)
-                    .SumAsync(vote => vote.Value);
-
-               context.Posts.Update(post);
-            }
-
-            await context.SaveChangesAsync();
         }
     }
 }

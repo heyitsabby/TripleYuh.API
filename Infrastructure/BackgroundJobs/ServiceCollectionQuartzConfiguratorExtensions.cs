@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Quartz;
 
-namespace Infrastructure
+namespace Infrastructure.BackgroundJobs
 {
     public static class ServiceCollectionQuartzConfiguratorExtensions
     {
