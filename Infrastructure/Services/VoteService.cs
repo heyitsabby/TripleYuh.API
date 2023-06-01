@@ -20,15 +20,24 @@ namespace Infrastructure.Services
             this.mapper = mapper;
         }
 
-        public async Task<VoteResponse> RemoveCommentVoteAsync(int commentId, string username)
+        public async Task<VoteResponse> RemoveCommentVoteAsync(int commentId, int voteId, string username)
         {
-            var vote = context.CommentVotes
-                .Where(vote => vote.CommentId == commentId && vote.Account.Username == username)
-                .SingleOrDefault() ?? throw new NotFoundResourceException("Vote can't be found.");
+            var vote = await context.CommentVotes
+                .FindAsync(voteId) ?? throw new NotFoundResourceException("Vote can't be found.");
 
             var account = context.Accounts
                 .Where(account => account.Username == username)
                 .SingleOrDefault() ?? throw new NotFoundResourceException($"Can't find user '{username}'.");
+
+            if (vote.Account.Username != account.Username && account.Role != Role.Admin) 
+            {
+                throw new VoteException("Unauthorized to perform vote deletion.");
+            }
+
+            if (vote.CommentId != commentId)
+            {
+                throw new VoteException("Vote doesn't belong to comment.");
+            }
 
             vote.Value = VoteRules.RemoveVote;
 
@@ -45,15 +54,24 @@ namespace Infrastructure.Services
             return response;
         }
 
-        public async Task<VoteResponse> RemovePostVoteAsync(int postId, string username)
+        public async Task<VoteResponse> RemovePostVoteAsync(int postId, int voteId, string username)
         {
-            var vote = context.PostVotes
-                .Where(vote => vote.PostId == postId && vote.Account.Username == username)
-                .SingleOrDefault() ?? throw new NotFoundResourceException("Vote can't be found");
+            var vote = await context.PostVotes
+                .FindAsync(voteId)  ?? throw new NotFoundResourceException("Vote can't be found.");
 
             var account = context.Accounts
                .Where(account => account.Username == username)
                .SingleOrDefault() ?? throw new NotFoundResourceException($"Can't find user '{username}'.");
+
+            if (vote.Account.Username != account.Username && account.Role != Role.Admin)
+            {
+                throw new VoteException("Unauthorized to perform vote deletion.");
+            }
+
+            if (vote.PostId != postId)
+            {
+                throw new VoteException("Vote doesn't belong to post.");
+            }
 
             vote.Value = VoteRules.RemoveVote;
 
