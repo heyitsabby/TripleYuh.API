@@ -1,3 +1,3 @@
 # TripleYuh.API
 
-A news aggregate API for music.
+A news aggregator API for music.
